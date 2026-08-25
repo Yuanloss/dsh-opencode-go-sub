@@ -1,6 +1,6 @@
 'use strict'
 // 模态一致性测试：listModels 与 resolveModel 必须一致，否则 vision-toolkit 变体报错
-const mod = require('D:/DeepSeekHarness/会话/dsh-opencode-go-sub/lib/index.js')
+const mod = require('./lib/index.js')
 const adapter = new mod.OpenCodeGoAdapter({ logger: { info() {}, warn() {}, error() {} } })
 ;(async () => {
   const sub = await adapter.listModels(mod.SUB_PROVIDER)

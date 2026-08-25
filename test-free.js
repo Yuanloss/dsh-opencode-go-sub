@@ -1,5 +1,5 @@
 'use strict'
-const mod = require('D:/DeepSeekHarness/会话/dsh-opencode-go-sub/lib/index.js')
+const mod = require('./lib/index.js')
 const adapter = new mod.OpenCodeGoAdapter({ logger: { info() {}, warn() {}, error() {} } })
 ;(async () => {
   for (const model of ['mimo-v2.5-free', 'hy3-free']) {

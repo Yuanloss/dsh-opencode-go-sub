@@ -1,6 +1,6 @@
 'use strict'
 // 端到端验证：luna / grok-4.5（Responses 路由）+ deepseek-v4-flash（chat 路由回退检查）
-const mod = require('D:/DeepSeekHarness/会话/dsh-opencode-go-sub/lib/index.js')
+const mod = require('./lib/index.js')
 const adapter = new mod.OpenCodeGoAdapter({ logger: { info() {}, warn() {}, error() {} } })
 
 async function tryModel(model, text) {

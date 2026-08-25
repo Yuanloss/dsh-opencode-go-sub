@@ -1,6 +1,6 @@
 'use strict'
 // dsh-opencode-go 凭证层测试：不打印任何密钥值
-const mod = require('D:/DeepSeekHarness/会话/dsh-opencode-go-sub/lib/index.js')
+const mod = require('./lib/index.js')
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 ;(async () => {

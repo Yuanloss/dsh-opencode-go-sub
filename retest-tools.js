@@ -1,6 +1,6 @@
 'use strict'
 // 复测：luna / grok 在多轮工具调用会话下的 Responses 翻译（真实 DSH 消息形状）
-const mod = require('D:/DeepSeekHarness/会话/dsh-opencode-go-sub/lib/index.js')
+const mod = require('./lib/index.js')
 const adapter = new mod.OpenCodeGoAdapter({ logger: { info() {}, warn() {}, error() {} } })
 
 const tools = [
