@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-opencode-go-sub
+      name: dsh-opencode-go-sub
+      inject: [llm]
