@@ -64,3 +64,7 @@ dsh plugin --profile web add github:Yuanloss/dsh-opencode-go-sub
 - **qwen3.7-max** 上游走 Anthropic `/messages` 方言，当前版本经 chat/completions 调用可能失败——可自行在 `MESSAGES_ONLY` 逻辑上扩展，或换用 qwen3.8-max / qwen3.7-plus。
 - 图片附件暂不转发（image block 会被忽略，与 dsh-opencode-zen 一致）；纯文本会话不受影响。
 - 模型调用受订阅额度与上游区域限制：中国大陆访问 GPT / Grok 系列会 403；DeepSeek 新版需先在 opencode.ai 控制台开启 "Enable models hosted in China"。
+
+---
+
+[中文版 README](README.md) · [English README](README.en.md)
