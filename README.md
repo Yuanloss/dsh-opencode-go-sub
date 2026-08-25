@@ -11,6 +11,7 @@
   ③ dsh-api-key-pool 的 `pool-config.json`（`pools.opencode-go` / `pools.opencode` 下的 keys）。
   插件启动时会在日志打印 key 来源（如 `key resolved from dsh-credentials:OPENCODE_GO_API_KEY`），便于确认。
 - 🚦 **错误原样透出**：403（区域封锁、未开启 "Enable models hosted in China" 等）会把网关返回的原文显示在 GUI 里。
+- 🔧 **版本兼容**：实现了新版 DSH 适配器接口（`prepareCall`），兼容 `dsh-llm` 0.1.0-rc.6 ~ 0.1.1-rc.x（新旧版本均可直接安装使用）。
 
 ## 安装
 

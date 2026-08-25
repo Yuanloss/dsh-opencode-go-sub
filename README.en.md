@@ -12,6 +12,7 @@ Server-side plugin that registers two provider routes: `opencode-go` (subscripti
   On startup the plugin logs the key source (e.g. `key resolved from dsh-credentials:OPENCODE_GO_API_KEY`) so you can confirm.
 - ⚡ **Full capability** — streaming, `reasoning_content` passthrough, tool calls, token usage (incl. cache hits), 429/5xx auto-retry.
 - 🚦 **Errors surface verbatim** — 403s (region block, "Enable models hosted in China" not enabled, etc.) show the gateway's original message in the GUI.
+- 🔧 **Version compatibility** — implements the newer DSH adapter interface (`prepareCall`), compatible with `dsh-llm` 0.1.0-rc.6 through 0.1.1-rc.x (works on both older and newer DeepSeek Harness releases).
 
 ## Installation
 
