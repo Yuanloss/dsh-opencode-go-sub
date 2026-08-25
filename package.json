@@ -1,7 +1,7 @@
 {
   "name": "dsh-opencode-go-sub",
   "description": "OpenCode Go 订阅 + OpenCode Zen 免费档 for DeepSeek Harness: 像 opencode 官方客户端一样展示完整模型目录（订阅 30 模型 + 免费 5 模型），零配置密钥自动发现，luna/grok 自动走 Responses API。",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "type": "commonjs",
   "main": "lib/index.js",
   "exports": {
