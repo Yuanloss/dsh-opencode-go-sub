@@ -10,22 +10,17 @@
   ② `~/.dsh/.credentials.yaml`（DSH 凭证文件，用户在 DSH 内填一次即可，**无需安装 opencode 客户端、无需设置环境变量**）；
   ③ dsh-api-key-pool 的 `pool-config.json`（`pools.opencode-go` / `pools.opencode` 下的 keys）。
   插件启动时会在日志打印 key 来源（如 `key resolved from dsh-credentials:OPENCODE_GO_API_KEY`），便于确认。
-- ⚡ **完整能力**：流式输出、`reasoning_content` 推理内容透传、工具调用、token 用量（含缓存命中）、429/5xx 自动重试。
 - 🚦 **错误原样透出**：403（区域封锁、未开启 "Enable models hosted in China" 等）会把网关返回的原文显示在 GUI 里。
 
 ## 安装
 
-从本地源码安装：
+**从 GitHub 安装**：
 
 ```sh
-dsh plugin --profile web add file:D:\DeepSeekHarness\会话\dsh-opencode-go-sub
+dsh plugin --profile web add github:Yuanloss/dsh-opencode-go-sub
 ```
 
-**从 GitHub 安装**（上传后替换 `<你的用户名>/<仓库名>`）：
-
-```sh
-dsh plugin --profile web add github:<你的用户名>/<仓库名>
-```
+> 若从本地克隆目录安装：`dsh plugin --profile web add file:/你克隆的目录/dsh-opencode-go-sub`
 
 **重启 `dsh web`** 后，模型选择器出现两个分组：`OpenCode Go（订阅）` 与 `OpenCode Zen（免费）`（模型以 `opencode-go/<model>`、`opencode-zen/<model>` 形式出现）。
 
@@ -48,7 +43,10 @@ dsh plugin --profile web add github:<你的用户名>/<仓库名>
 
 > 解析优先级：**环境变量 > `~/.dsh/.credentials.yaml` > key pool**。插件直接读凭证文件，不依赖任何 cordis 服务注入。启动日志会打印 key 来源（如 `key resolved from dsh-credentials:OPENCODE_GO_API_KEY`）。
 
-> ⚠️ **重要**：不要在「设置 → 模型 → 添加 provider」里手动添加名为 **`opencode-go`** 的 provider——它会与插件注册的同一路由重复，触发 `DUPLICATE_ADAPTER` 冲突，可能导致插件加载失败。插件自带订阅 + 免费两组，**无需手动添加**。若确需另建自定义 provider，请用其他路由名（如 `ocgo`）。
+> ⚠️ **重要（区分"配置密钥"和"添加 provider 路由"）**：
+> - **配置密钥**：在任何界面输入 key / 设置凭证，都可以，插件会自动读取。
+> - **添加 provider 路由**：不要手动新增一个**命名为 `opencode-go`** 的自定义提供商模型 provider——插件已在内部注册 `opencode-go`（订阅）与 `opencode-zen`（免费）两个路由，再加同名的会触发 `DUPLICATE_ADAPTER` 冲突，可能导致插件加载失败。
+> - 插件自带订阅 + 免费两组，**无需手动添加**。若确需接入**其他**第三方 OpenAI 兼容端点，请用**别的路由名**（如 `ocgo`、`my-gateway`）。
 
 ## 模型呈现（两个分组，有序 + 友好命名）
 
