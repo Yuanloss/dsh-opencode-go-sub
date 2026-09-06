@@ -47,6 +47,7 @@ dsh plugin --profile web add github:Yuanloss/dsh-opencode-go-sub
 > ⚠️ **重要（区分"配置密钥"和"添加 provider 路由"）**：
 > - **配置密钥**：在任何界面输入 key / 设置凭证，都可以，插件会自动读取。
 > - **添加 provider 路由**：不要手动新增一个**命名为 `opencode-go`** 的自定义提供商模型 provider——插件已在内部注册 `opencode-go`（订阅）与 `opencode-zen`（免费）两个路由，再加同名的会触发 `DUPLICATE_ADAPTER` 冲突，可能导致插件加载失败。
+> - **DSH 内置 pi-ai 自带同名目录项（最容易踩的坑）**：DSH 自带的多提供方适配器 pi-ai **本身就内置了 id 为 `opencode-go` 的 provider**（Models 设置页会把它当作"已安装 provider"提供一键启用）。若在 Models 页启用了它，会在 `~/.dsh/settings.yaml` 的 `llm-pi-ai.providers` 下写入一条只有 `apiKeyEnv` 的 `opencode-go`——它与本插件的 `opencode-go` 路由重名。由于 llm-pi-ai 会把自己名下**所有** provider（例如你添加的 Volcano Engine (Agent Plan)、硅基流动）**整批一次性注册**，只要其中出现已被本插件占用的 `opencode-go`，**整批注册就会失败**——表现就是模型选择器里看不到你添加的那些模型 provider。**修复**：在 Models 设置页删除那个同名的 `opencode-go` provider（或删除 `settings.yaml` 中 `llm-pi-ai.providers.opencode-go` 整段；保留 `.credentials.yaml` 里的 `OPENCODE_GO_API_KEY` 即可）。本插件启动时会自动扫描该冲突并打印删除指引，保存后 pi-ai 会自动重新注册，无需重启。
 > - 插件自带订阅 + 免费两组，**无需手动添加**。若确需接入**其他**第三方 OpenAI 兼容端点，请用**别的路由名**（如 `ocgo`、`my-gateway`）。
 
 ## 模型呈现（两个分组，有序 + 友好命名）
