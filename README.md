@@ -64,6 +64,7 @@ dsh plugin --profile web add github:Yuanloss/dsh-opencode-go-sub
 
 - **gpt-5.6-luna / grok-4.5 走 Responses API**：网关的 chat/completions 路由对它们恒 500 / "Endpoint is unavailable"，插件已自动把它们路由到 `/v1/responses`。二者由 OpenAI / xAI 托管，**中国大陆区域会被上游拒绝**（403 `unsupported_country_region_territory`）——需要走受支持区域的网络出口（VPN 需系统级 TUN 模式，浏览器级代理对 dsh web 进程无效）。
 - **qwen3.7-max** 上游走 Anthropic `/messages` 方言，当前版本经 chat/completions 调用可能失败——可自行在 `MESSAGES_ONLY` 逻辑上扩展，或换用 qwen3.8-max / qwen3.7-plus。
+- **`x-opencode-session` 头（OpenCode Go 自 2026-09-05 强制）**：网关要求每个推理请求带稳定的 per-conversation id，缺失即 `400 MissingSessionID`。插件自动读取 DSH agent-loop 注入的会话 id（`GenerateOptions.sessionId`，形如 `session-<uuid>`）并规整为裸 UUID 发送；非会话直连调用回退到进程级稳定 UUID，因此无需任何配置。若用 DSH 官方 pi-ai 路由接入 opencode-go（而非本插件），官方讨论 [#5495](https://github.com/deepseek-ai/deepseek-harness/discussions/5495) 提供了 `sessionHeader: x-opencode-session` 的配置方案。
 - 图片附件暂不转发（image block 会被忽略，与 dsh-opencode-zen 一致）；纯文本会话不受影响。
 - 模型调用受订阅额度与上游区域限制：中国大陆访问 GPT / Grok 系列会 403；DeepSeek 新版需先在 opencode.ai 控制台开启 "Enable models hosted in China"。
 
