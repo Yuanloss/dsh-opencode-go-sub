@@ -72,6 +72,20 @@ The subscription list syncs the live gateway catalog (`/zen/go/v1/models`); know
 - **Image attachments are not forwarded** (image blocks are ignored, same as dsh-opencode-zen); text-only conversations are unaffected.
 - Calls are subject to subscription quotas and upstream region policy: GPT / Grok models return 403 from mainland China; newer DeepSeek versions require enabling "Enable models hosted in China" in the opencode.ai console first.
 
+## DSH version compatibility
+
+The adapter contract is verified against the **real registries of `dsh-llm` 0.1.2-rc.1 and 0.1.5-rc.1**:
+
+```sh
+npm test                  # contract + conflict + session-header + real-registry integration
+node test-integration.mjs "<path to dsh-llm package>"   # regress a candidate version
+```
+
+- Covers five real call paths: `registerAdapter` (incl. `DUPLICATE_ADAPTER` semantics), `listProviders`, `imageRequestPricing`, `listModels`, `prepareCall`.
+- **`imageRequestPricing` must be implemented**: `dsh-token-meter`'s `measure()` calls it unconditionally, and `dsh-compaction-basic`'s `prepareCompaction()` reaches it — so a missing method throws `TypeError: adapter.imageRequestPricing is not a function` and **breaks context compaction**. Adapters extending `dsh-llm`'s abstract class inherit a default; this zero-dependency plugin declares it explicitly (returning `undefined` = no image pricing declared). Fixed in v0.1.10.
+- After upgrading DSH, run the integration test first: `xxx is not a function` or `INVALID_*` means the contract drifted and the adapter needs updating.
+- Note: DSH 0.1.5-rc.1 itself does **not** ship the `x-opencode-session` fix yet — opencode-go working depends on this plugin's implementation, not on the DSH version.
+
 ---
 
 [中文版 README](README.md) · [English README](README.en.md)

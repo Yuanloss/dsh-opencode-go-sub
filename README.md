@@ -68,6 +68,20 @@ dsh plugin --profile web add github:Yuanloss/dsh-opencode-go-sub
 - 图片附件暂不转发（image block 会被忽略，与 dsh-opencode-zen 一致）；纯文本会话不受影响。
 - 模型调用受订阅额度与上游区域限制：中国大陆访问 GPT / Grok 系列会 403；DeepSeek 新版需先在 opencode.ai 控制台开启 "Enable models hosted in China"。
 
+## DSH 版本兼容
+
+适配器契约已在 **`dsh-llm` 0.1.2-rc.1** 与 **0.1.5-rc.1** 的真实注册表下实测通过：
+
+```sh
+npm test                  # 契约 + 冲突 + 会话头 + 真实注册表集成测试
+node test-integration.mjs "<dsh-llm 包目录>"   # 指定候选版本回归
+```
+
+- 覆盖 `registerAdapter`（含 `DUPLICATE_ADAPTER` 语义）、`listProviders`、`imageRequestPricing`、`listModels`、`prepareCall` 五个真实调用路径。
+- **`imageRequestPricing` 必须实现**：`dsh-token-meter` 的 `measure()` 会无条件调用它，而 `dsh-compaction-basic` 的 `prepareCompaction()` 会走到这里；继承 `dsh-llm` 抽象类的适配器自带默认实现，本插件零依赖、故显式补上（返回 `undefined` = 不声明图片计价）。缺失会抛 `TypeError: adapter.imageRequestPricing is not a function`，导致**上下文压缩失败**（v0.1.10 修复）。
+- 升级 DSH 后建议先跑集成测试；出现 `xxx is not a function` 或 `INVALID_*` 即表示契约漂移，需按新版补实现。
+- 注意：DSH 0.1.5-rc.1 自身**尚未**内置 `x-opencode-session` 修复，opencode-go 可正常使用依赖的是本插件的实现，而非 DSH 版本。
+
 ---
 
 [中文版 README](README.md) · [English README](README.en.md)
